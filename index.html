@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prorated Payback Calculator for Role Conversion Hires</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 60px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    header h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #1e293b;
+      letter-spacing: -0.3px;
+    }
+
+    header p {
+      margin-top: 6px;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    .instructions {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 24px 28px 26px;
+      width: 100%;
+      max-width: 860px;
+      margin-bottom: 24px;
+    }
+
+    .instructions h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.55;
+    }
+
+    .step-text a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .step-text a:hover {
+      text-decoration: underline;
+    }
+
+    .more-info {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1.5px solid #f1f5f9;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    .more-info a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .more-info a:hover {
+      text-decoration: underline;
+    }
+
+    .layout {
+      display: flex;
+      gap: 24px;
+      width: 100%;
+      max-width: 860px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      padding: 28px 28px 32px;
+      flex: 1 1 340px;
+    }
+
+    .card h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 22px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 7px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+      font-size: 0.95rem;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 9px;
+      color: #1e293b;
+      background: #f8fafc;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+      background: #fff;
+    }
+
+    input.has-prefix {
+      padding-left: 28px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 9px;
+      color: #1e293b;
+      background: #f8fafc;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+      background-color: #fff;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1.5px solid #f1f5f9;
+      margin: 22px 0;
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: 5px;
+    }
+
+    /* Result card */
+    .result-card {
+      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+      padding: 28px 28px 32px;
+      flex: 1 1 340px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .result-card h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 22px;
+    }
+
+    .result-amount {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .result-label {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 28px;
+    }
+
+    .result-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      margin: 0 0 22px;
+    }
+
+    .breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+    }
+
+    .breakdown-row .bk-label {
+      color: rgba(255,255,255,0.65);
+    }
+
+    .breakdown-row .bk-value {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .progress-wrap {
+      margin-top: 24px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 7px;
+    }
+
+    .progress-bar-bg {
+      background: rgba(255,255,255,0.15);
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: rgba(255,255,255,0.85);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .no-result {
+      color: rgba(255,255,255,0.4);
+      font-size: 0.9rem;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .error-msg {
+      color: #fca5a5;
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.5rem; }
+      .result-amount { font-size: 2.4rem; }
+      .card, .result-card { padding: 22px 18px 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Prorated Payback Calculator for Role Conversion Hires</h1>
+    <p>Calculates the RC Hire's first year, prorated payback.</p>
+  </header>
+
+  <div class="instructions">
+    <h2>Instructions</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Determine the annual payback amount based on location and job level using the cost template found on the <a href="https://chorus.apple.com/page/7437880" target="_blank">RC Team's Chorus page</a>.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Enter the annual payback amount in the calculator below.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Enter the employee's start date, if known. Enter an anticipated start date for an estimated payback to help with planning/budgeting.</div>
+      </div>
+    </div>
+    <div class="more-info">
+      For more information about the Role Conversion program, visit the <a href="https://chorus.apple.com/space/521620" target="_blank">IS&T Role Conversion Team's Chorus page</a>.
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <!-- Input card -->
+    <div class="card">
+      <h2>Inputs</h2>
+
+      <div class="field">
+        <label for="annualAmount">Annual Payback Amount</label>
+        <div class="input-wrap">
+          <span class="input-prefix">$</span>
+          <input type="number" id="annualAmount" class="has-prefix" placeholder="10,000" min="0" step="0.01">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="hireDate">Hire Date (actual or estimated)</label>
+        <input type="date" id="hireDate">
+      </div>
+
+      <hr class="divider">
+
+      <div class="card" style="background:#f8fafc; box-shadow:none; padding:18px 18px 20px; border:1.5px solid #e2e8f0; border-radius:12px;">
+        <h2 style="margin-bottom:16px;">Benefit Period</h2>
+
+        <div class="field" style="margin-bottom:0;">
+          <select id="fiscalYear">
+            <option value="">-- Select a fiscal year --</option>
+            <option value="FY26" selected>FY26 (Sep 28, 2025 – Sep 26, 2026)</option>
+            <option value="FY27">FY27 (Sep 27, 2026 – Sep 25, 2027)</option>
+            <option value="FY28">FY28 (Sep 26, 2027 – Sep 30, 2028)</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint" style="margin-top:10px;"></p>
+    </div>
+
+    <!-- Result card -->
+    <div class="result-card" id="resultCard">
+      <h2>Result</h2>
+      <div id="resultContent" class="no-result">
+        Enter an amount and hire date to see the prorated payback amount.
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Enter values above &mdash; results update automatically.
+  </footer>
+
+  <script>
+    const fmt = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+    const fmtWhole = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+    function parseLocalDate(str) {
+      // Parse YYYY-MM-DD as local date (avoids UTC midnight timezone shift)
+      if (!str) return null;
+      const [y, m, d] = str.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+
+    function daysBetween(d1, d2) {
+      // d2 - d1 in whole days
+      return Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+    }
+
+    function formatDate(dateObj) {
+      return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    const FY_PERIODS = {
+      FY26: { start: '2025-09-28', end: '2026-09-26' },
+      FY27: { start: '2026-09-27', end: '2027-09-25' },
+      FY28: { start: '2027-09-26', end: '2028-09-30' },
+    };
+
+    function calculate() {
+      const amountStr = document.getElementById('annualAmount').value;
+      const hireDateStr = document.getElementById('hireDate').value;
+      const fiscalYear = document.getElementById('fiscalYear').value;
+
+      const resultContent = document.getElementById('resultContent');
+
+      if (!amountStr || !hireDateStr || !fiscalYear) {
+        resultContent.className = 'no-result';
+        resultContent.innerHTML = 'Enter an amount and hire date to see the prorated payback amount.';
+        return;
+      }
+
+      const periodStartStr = FY_PERIODS[fiscalYear].start;
+      const periodEndStr   = FY_PERIODS[fiscalYear].end;
+
+      const annual = parseFloat(amountStr);
+      const hireDate    = parseLocalDate(hireDateStr);
+      const periodStart = parseLocalDate(periodStartStr);
+      const periodEnd   = parseLocalDate(periodEndStr);
+
+      if (isNaN(annual) || annual < 0) {
+        resultContent.className = 'no-result';
+        resultContent.innerHTML = '<span class="error-msg">Please enter a valid dollar amount.</span>';
+        return;
+      }
+
+      // Replicate the Excel formula:
+      // =A2 * MAX(0, MIN(periodEnd - MAX(hireDate, periodStart) + 1, 365)) / 365
+      const effectiveStart = hireDate > periodStart ? hireDate : periodStart;
+      const rawDays = daysBetween(effectiveStart, periodEnd) + 1;
+      const daysEligible = Math.max(0, Math.min(rawDays, 365));
+      const proratedAmount = annual * daysEligible / 365;
+      const pct = (daysEligible / 365) * 100;
+
+      // Determine "hired when" label
+      let statusLabel = '';
+      if (hireDate < periodStart) {
+        statusLabel = 'Hired before period start &mdash; full benefit period applies.';
+      } else if (hireDate > periodEnd) {
+        statusLabel = 'Hired after period end &mdash; no prorated amount.';
+      } else {
+        statusLabel = 'Hired mid-period &mdash; prorated amount below.';
+      }
+
+      resultContent.className = '';
+      resultContent.innerHTML = `
+        <div class="result-amount">${fmtWhole.format(proratedAmount)}</div>
+        <div class="result-label">${statusLabel}</div>
+
+        <hr class="result-divider">
+
+        <div class="breakdown">
+          <div class="breakdown-row">
+            <span class="bk-label">Annual amount</span>
+            <span class="bk-value">${fmt.format(annual)}</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="bk-label">Hire date</span>
+            <span class="bk-value">${formatDate(hireDate)}</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="bk-label">Eligible start</span>
+            <span class="bk-value">${formatDate(effectiveStart)}</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="bk-label">Period end</span>
+            <span class="bk-value">${formatDate(periodEnd)}</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="bk-label">Eligible days</span>
+            <span class="bk-value">${daysEligible} / 365</span>
+          </div>
+        </div>
+
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>Proration</span>
+            <span>${pct.toFixed(1)}%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: ${Math.min(pct,100)}%"></div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Wire up all inputs to auto-calculate
+    ['annualAmount','hireDate','fiscalYear'].forEach(id => {
+      document.getElementById(id).addEventListener('input', calculate);
+    });
+
+    // Auto-select fiscal year based on hire date
+    document.getElementById('hireDate').addEventListener('input', function() {
+      const hireDateStr = this.value;
+      if (!hireDateStr) return;
+      const hireDate = parseLocalDate(hireDateStr);
+      const fySelect = document.getElementById('fiscalYear');
+      let matched = '';
+      for (const [fy, period] of Object.entries(FY_PERIODS)) {
+        const start = parseLocalDate(period.start);
+        const end   = parseLocalDate(period.end);
+        if (hireDate >= start && hireDate <= end) {
+          matched = fy;
+          break;
+        }
+      }
+      fySelect.value = matched || 'FY26';
+    });
+
+    // Run once on load in case of browser-autofilled values
+    calculate();
+  </script>
+</body>
+</html>
